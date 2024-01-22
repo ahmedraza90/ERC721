@@ -123,15 +123,19 @@ describe("FidoDido Testing", function () {
       await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.emit(yourContract, "Transfer");
     });
 
-    it("should revert if mint limit on whitelist wallet is reached", async () => {
-      // await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
-      // await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Mint limit reached");
-      
+    it("should revert if mint limit on whitelist wallet is reached", async () => {      
       for (let i = 0; i < 2; i++) {
         const price = ethers.parseEther("1");
         await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
       }
       const price = ethers.parseEther("0.5");
+      await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Mint limit reached");
+    });
+
+    it("should revert if mint limit on public wallet is reached", async () => {      
+      await yourContract.connect(owner).switchPhase();
+      const price = ethers.parseEther("1");
+      await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
       await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Mint limit reached");
     });
    
@@ -147,14 +151,6 @@ describe("FidoDido Testing", function () {
       const price = ethers.parseEther("0.01"); // assuming the price is 1 ether
        await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Wrong Ether value");
     });
-   
-    // it("should revert if max supply is reached", async () => {
-    //    await expect(contract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"])).to.be.revertedWith("Max supply reached");
-    // });
-   
-    // it("should revert if total supply limit is reached during private phase", async () => {
-    //    await expect(contract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"])).to.be.revertedWith("Total supply limit reached during private phase");
-    // });
    
     it("should revert if invalid merkle proof is provided", async () => {
       const price = ethers.parseEther("0.5");
