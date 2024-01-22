@@ -65,8 +65,6 @@ contract FidoDido is
     event RevealNFTEvent(string baseURI);
     event SwitchPhaseEvent(bool isPrivatePhase);
 
-    
-
     constructor(
         address initialOwner,
         string memory name,
@@ -143,7 +141,6 @@ contract FidoDido is
             !(_isPrivatePhase && _nextTokenId + 1 > 6777),
             "Total supply limit reached during private phase"
         );
-        require(to != address(0), "Invalid recipient address");
         if (_isPrivatePhase) {
             bytes32 node = keccak256(abi.encodePacked(to));
             require(
@@ -153,6 +150,7 @@ contract FidoDido is
         }
 
         _safeMint(to, _nextTokenId + 1);
+        _nextTokenId++;
         _setTokenURI(_nextTokenId + 1, (_nextTokenId + 1).toString());
         _walletMintCount[to]++;
         // emit SafeMintEvent(to, _nextTokenId + 1);
@@ -160,14 +158,20 @@ contract FidoDido is
 
     function batchAirdrop(address[] memory recipients) public onlyOwner {
         require(!airdropCompleted, "Airdrop already completed");
-        require(recipients.length == 777, "Batch minting is set to 777 addresses");
-        require(_nextTokenId + recipients.length <= MAX_SUPPLY, "Not enough supply left for batch minting");
+        require(
+            recipients.length == 777,
+            "Batch minting is set to 777 addresses"
+        );
+        require(
+            _nextTokenId + recipients.length <= MAX_SUPPLY,
+            "Not enough supply left for batch minting"
+        );
 
         for (uint256 i; i < recipients.length; i++) {
             _safeMint(recipients[i], _nextTokenId + 1);
             _nextTokenId++;
         }
-        
+
         airdropCompleted = true;
         emit BatchAirdropSuccess(msg.sender, 777); // Emit the event
     }
@@ -175,7 +179,7 @@ contract FidoDido is
     function SingleAirdrop(address recipient) public onlyOwner {
         require(_nextTokenId < MAX_SUPPLY, "Max supply reached");
         require(recipient != address(0), "Invalid recipient address");
-        
+
         _safeMint(recipient, _nextTokenId + 1);
         _nextTokenId++;
         emit SingleAirdropSuccess(msg.sender, recipient, _nextTokenId); // Emit the event
