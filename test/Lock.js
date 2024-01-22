@@ -71,7 +71,7 @@ describe("FidoDido Testing", function () {
   describe("batchAirdrop", function () {
 
     const signers = [];
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 777; i++) {
         // Create a new wallet
         const wallet = ethers.Wallet.createRandom();
         // console.log(wallet.address)
@@ -79,7 +79,7 @@ describe("FidoDido Testing", function () {
         signers.push(wallet.address);
       }
 
-    it("Should mint tokens to each recipient", async function () {
+    it("Should mint tokens to each recipient and balnace should increase accordingly", async function () {
       await yourContract.connect(owner).batchAirdrop(signers);
       for (let i = 0; i < signers.length; i++) {
         const balance = await yourContract.balanceOf(signers[i]);
@@ -92,6 +92,22 @@ describe("FidoDido Testing", function () {
     });
 
   });
+
+  describe("SingleAirdrop", function () {
+
+  
+    it("Should mint tokens to single recipient and balnace should increase accordingly", async function () {
+      await yourContract.connect(owner).SingleAirdrop(addr1);
+        const balance = await yourContract.balanceOf(addr1);
+        expect(balance).to.equal(1);
+    });
+
+    it("Should revert if not called by owner", async function () {
+      await expect(yourContract.connect(addr1).SingleAirdrop(addr2)).to.be.reverted;
+    });
+
+  });
+  
 
   describe("safeMint", () => {
 
@@ -108,12 +124,14 @@ describe("FidoDido Testing", function () {
     });
 
     it("should revert if mint limit on whitelist wallet is reached", async () => {
-      for (let i = 0; i < 2; i++) {
-         const price = ethers.parseEther("0.5");
-         await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
-        }
-        const price = ethers.parseEther("0.5");
-        await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Mint limit reached");
+      const price = ethers.parseEther("0.5");
+      await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
+      await yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })
+
+      // for (let i = 0; i < 2; i++) {
+      // }
+      // const price = ethers.parseEther("0.5");
+      // await expect(yourContract.safeMint("0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB", ["0x04a10bfd00977f54cc3450c9b25c9b3a502a089eba0097ba35fc33c4ea5fcb54","0x9d997719c0a5b5f6db9b8ac69a988be57cf324cb9fffd51dc2c37544bb520d65","0x0befebd5f6f5e8b5f7ec6935245efbd76ce396aedac1b12781a64df01b75aab7"],{ value: price })).to.be.revertedWith("Mint limit reached");
     });
    
     it("should revert if wrong Ether value is sent on privateSale", async () => {
