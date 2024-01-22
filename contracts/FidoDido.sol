@@ -128,8 +128,8 @@ contract FidoDido is
     ) public payable nonReentrant {
         require(
             _isPrivatePhase
-                ? _walletMintCount[to] < 3
-                : _walletMintCountPublic[to] < 2,
+                ? _walletMintCount[to] < 2
+                : _walletMintCountPublic[to] < 1,
             "Mint limit reached"
         );
         require(
@@ -143,7 +143,7 @@ contract FidoDido is
             !(_isPrivatePhase && _nextTokenId + 1 > 6777),
             "Total supply limit reached during private phase"
         );
-
+        require(to != address(0), "Invalid recipient address");
         if (_isPrivatePhase) {
             bytes32 node = keccak256(abi.encodePacked(to));
             require(
@@ -163,7 +163,7 @@ contract FidoDido is
         require(recipients.length == 777, "Batch minting is set to 777 addresses");
         require(_nextTokenId + recipients.length <= MAX_SUPPLY, "Not enough supply left for batch minting");
 
-        for (uint256 i = 0; i < recipients.length; i++) {
+        for (uint256 i; i < recipients.length; i++) {
             _safeMint(recipients[i], _nextTokenId + 1);
             _nextTokenId++;
         }
