@@ -141,12 +141,10 @@ contract FidoDido is
             !(_isPrivatePhase && _nextTokenId + 1 > 6777),
             "Total supply limit reached during private phase"
         );
-        if (_isPrivatePhase) {
-            bytes32 node = keccak256(abi.encodePacked(to));
-            require(
-                MerkleProof.verify(merkleProof, merkleRoot, node),
-                "Invalid merkle proof"
-            );
+        if (_isPrivatePhase && MerkleProof.verify(merkleProof, merkleRoot, keccak256(abi.encodePacked(to)))) {
+            _walletMintCount[to]++;
+        } else {
+            _walletMintCountPublic[to]++;
         }
 
         _safeMint(to, _nextTokenId + 1);
