@@ -1,69 +1,40 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.4;
 
-import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "./ERC721A.sol";
+// import "@openzeppelin/contracts/access/Ownable.sol";
+// import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+// import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "../node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "../node_modules/@openzeppelin/contracts/utils/Strings.sol";
 import "../node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-contract FidoDido is
-    ERC721,
-    ERC721Enumerable,
-    ERC721URIStorage,
-    ERC721Pausable,
-    Ownable,
-    ERC721Burnable,
-    ReentrancyGuard
-{
-    // GOOD AND WORKING
-
-    // FFFFFF IIII DDDDDD     OOOO        DDDD     IIII  DDDD   IIII    OOOO
-    // FF      II  D    DD   O    O       D   DD    II   D  DD   II    O    O
-    // FFFFF   II  D     DD  O    O       D    DD   II   D   DD  II    O    O
-    // FF      II  D    DD   O    O       D   DD    II   D  DD   II    O    O
-    // FF     IIII DDDDDD     OOOO        DDDDD    IIII  DDDD   IIII    OOOO
-
+contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
     bytes32 public merkleRoot;
 
-    using Strings for uint256;
-    uint256 private _nextTokenId;
-
-    // @notice Mapping to store the count and track tokens minted by each wallet
-    //    @notice _walletMintCount for private phase while _walletMintCountPublic for public phase;
-    mapping(address => uint256) private _walletMintCount;
-    mapping(address => uint256) private _walletMintCountPublic;
-
-    uint256 public constant MAX_SUPPLY = 77777;
     uint256 public constant PRIVATE_PHASE_PRICE = 0.03 ether;
     uint256 public constant PUBLIC_PHASE_PRICE = 0.04 ether;
 
-    // Boolean to toggle between private and public phases
+    //    @notice _walletMintCount for private phase while _walletMintCountPublic for public phase;
+    mapping(address => uint256) private _walletMintCount;
+    mapping(address => uint256) private _walletMintCountPublic;
     bool public _isPrivatePhase = true;
-
-    bool public airdropCompleted = false;
-
-    string private _baseTokenURI;
 
     // Boolean to toggle between reveal
     bool public revealed = false;
+    uint256 MAX_SUPPLY = 7777;
+    string private _baseTokenURI;
 
-    string private _nonRevealedUri;
-
-    // Define the events
-    event BatchAirdropSuccess(address owner, uint256 count);
+    event SafeMintEvent(address indexed to, uint256 quantity);
+    event RevealNFTEvent(string baseURI);
+    event SwitchPhaseEvent(bool isPrivatePhase);
+    event BatchAirdropSuccess(uint256 count);
     event SingleAirdropSuccess(
         address owner,
         address recipient,
         uint256 tokenId
     );
-    event SafeMintEvent(address indexed to, uint256 tokenId);
-    event RevealNFTEvent(string baseURI);
-    event SwitchPhaseEvent(bool isPrivatePhase);
 
     constructor(
         address initialOwner,
@@ -71,18 +42,29 @@ contract FidoDido is
         string memory symbol,
         string memory baseUri,
         bytes32 _merkleRoot
-    ) ERC721(name, symbol) Ownable(initialOwner) {
+    ) ERC721A(name, symbol) Ownable(initialOwner) {
         setBaseURI(baseUri);
-        _nonRevealedUri = baseUri;
         merkleRoot = _merkleRoot;
     }
 
-    function pause() public onlyOwner {
-        _pause();
+    function setMerkleRoot(bytes32 _merkleRoot) public onlyOwner {
+        merkleRoot = _merkleRoot;
     }
 
-    function unpause() public onlyOwner {
-        _unpause();
+    function setBaseURI(string memory _URI) public onlyOwner {
+        _baseTokenURI = _URI;
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+        return _baseTokenURI;
+    }
+
+    function getIsPrivatePhase() public view returns (bool) {
+        return _isPrivatePhase;
+    }
+
+    function _startTokenId() internal pure override returns (uint256) {
+        return 1;
     }
 
     // Function to switch between private and public phases
@@ -91,168 +73,107 @@ contract FidoDido is
         emit SwitchPhaseEvent(_isPrivatePhase);
     }
 
-    function setBaseURI(string memory baseURI) public onlyOwner {
-        _baseTokenURI = baseURI;
-    }
-
-    // Function to set/change  non-revealed URI for token metadata
-    function setnonRevealedUri(string memory baseURI) public onlyOwner {
-        _nonRevealedUri = baseURI;
-    }
-
-    function _baseURI() internal view override returns (string memory) {
-        return _baseTokenURI;
-    }
-
-    function nonRevealedUri() internal view returns (string memory) {
-        return _nonRevealedUri;
-    }
-
-    function testMerkel(
-        address to,
-        bytes32[] calldata merkleProof
-    ) public view returns (bool) {
-        bytes32 node = keccak256(abi.encodePacked(to));
+    function tokenURI(
+        uint256 tokenId
+    ) public view override returns (string memory) {
         require(
-            MerkleProof.verify(merkleProof, merkleRoot, node),
-            "Invalid merkle proof"
-        );
-        return true;
-    }
-
-    function safeMint(
-        address to,
-        bytes32[] calldata merkleProof
-    ) public payable nonReentrant {
-        require(
-            _isPrivatePhase
-                ? _walletMintCount[to] < 2
-                : _walletMintCountPublic[to] < 1,
-            "Mint limit reached"
-        );
-        require(
-            _isPrivatePhase
-                ? msg.value >= PRIVATE_PHASE_PRICE
-                : msg.value >= PUBLIC_PHASE_PRICE,
-            "Wrong Ether value"
-        );
-        require(_nextTokenId + 1 < MAX_SUPPLY, "Max supply reached");
-        require(
-            !(_isPrivatePhase && _nextTokenId + 1 > 6777),
-            "Total supply limit reached during private phase"
-        );
-        if (_isPrivatePhase) {
-            require(
-                MerkleProof.verify(merkleProof, merkleRoot, keccak256(abi.encodePacked(to))),
-                "Invalid merkle proof"
-            );
-            _walletMintCount[to]++;
-        } else {
-            _walletMintCountPublic[to]++;
-        }
-
-        _safeMint(to, _nextTokenId + 1);
-        _nextTokenId++;
-        _setTokenURI(_nextTokenId + 1, (_nextTokenId + 1).toString());
-        // emit SafeMintEvent(to, _nextTokenId + 1);
-    }
-
-    function batchAirdrop(address[] memory recipients) public onlyOwner {
-        require(!airdropCompleted, "Airdrop already completed");
-        require(
-            recipients.length == 777,
-            "Batch minting is set to 777 addresses"
-        );
-        require(
-            _nextTokenId + recipients.length <= MAX_SUPPLY,
-            "Not enough supply left for batch minting"
+            ownerOf(tokenId) != address(0),
+            "Token does not exist of given address"
         );
 
-        for (uint256 i; i < recipients.length; i++) {
-            _safeMint(recipients[i], _nextTokenId + 1);
-            _nextTokenId++;
-        }
+        string memory baseURI = _baseURI();
+        string memory _tokenURI = revealed
+            ? string(abi.encodePacked(baseURI, _toString(tokenId),".json"))
+            : string(abi.encodePacked(baseURI,"hidden.json"));
 
-        airdropCompleted = true;
-        emit BatchAirdropSuccess(msg.sender, 777); // Emit the event
+        return bytes(baseURI).length != 0 ? _tokenURI : "";
     }
+    
+    // function tokenURI(
+    //     uint256 tokenId
+    // ) public view override returns (string memory) {
+    //     require(
+    //         ownerOf(tokenId) != address(0),
+    //         "Token does not exist of given address"
+    //     );
 
-    function SingleAirdrop(address recipient) public onlyOwner {
-        require(_nextTokenId < MAX_SUPPLY, "Max supply reached");
-        require(recipient != address(0), "Invalid recipient address");
+    //     string memory baseURI = _baseURI();
+    //     string memory _tokenURI = string(abi.encodePacked(baseURI, _toString(tokenId), ".json"));
 
-        _safeMint(recipient, _nextTokenId + 1);
-        _nextTokenId++;
-        emit SingleAirdropSuccess(msg.sender, recipient, _nextTokenId); // Emit the event
-    }
+    //     return bytes(baseURI).length != 0 ? _tokenURI : "";
+    // }
 
-    // Function to Reveal Nfts
     function revealNFT(string memory baseURI) public onlyOwner {
         revealed = true;
         setBaseURI(baseURI);
         emit RevealNFTEvent(baseURI);
     }
 
-    function _update(
+    function withdraw() external onlyOwner {
+        payable(owner()).transfer(address(this).balance);
+    }
+
+    function airdrop(address to, uint256 quantity) external onlyOwner {
+        // _safeMint's second argument now takes in a quantity, not a tokenId.
+        // require(quantity + _numberMinted(to) <= MAX_MINTS, "Exceeded the limit");
+        require(
+            totalSupply() + quantity <= MAX_SUPPLY,
+            "Not enough tokens left"
+        );
+
+        _safeMint(to, quantity);
+    }
+
+    function safeMint(
+        uint256 quantity,
         address to,
-        uint256 tokenId,
-        address auth
-    )
-        internal
-        override(ERC721, ERC721Enumerable, ERC721Pausable)
-        returns (address)
-    {
-        return super._update(to, tokenId, auth);
-    }
-
-    function _increaseBalance(
-        address account,
-        uint128 value
-    ) internal override(ERC721, ERC721Enumerable) {
-        super._increaseBalance(account, value);
-    }
-
-    // Overridden function to get token URI
-    function tokenURI(
-        uint256 tokenId
-    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+        bytes32[] calldata merkleProof
+    ) public payable nonReentrant {
         require(
-            _ownerOf(tokenId) != address(0),
-            "ERC721Metadata: URI query for nonexistent token"
+            _isPrivatePhase
+                ? _walletMintCount[to] + quantity < 3
+                : _walletMintCountPublic[to] + quantity < 2,
+            "Mint limit reached"
+        );
+        require(
+            _isPrivatePhase
+                ? msg.value * quantity >= PRIVATE_PHASE_PRICE
+                : msg.value * quantity >= PUBLIC_PHASE_PRICE,
+            "Wrong Ether value"
+        );
+        require(_nextTokenId() < MAX_SUPPLY, "Max supply reached");
+        require(
+            !(_isPrivatePhase && _nextTokenId() > 6854),
+            "Total supply limit reached during private phase"
+        );
+        if (_isPrivatePhase) {
+            require(
+                MerkleProof.verify(
+                    merkleProof,
+                    merkleRoot,
+                    keccak256(abi.encodePacked(to))
+                ),
+                "Invalid merkle proof"
+            );
+            _walletMintCount[to] = quantity + _walletMintCount[to];
+        } else {
+            _walletMintCountPublic[to] = quantity + _walletMintCountPublic[to];
+        }
+
+        _safeMint(to, quantity);
+
+        emit SafeMintEvent(to, quantity);
+    }
+
+    function batchAirdrop(address[] memory recipients) public onlyOwner {
+        require(
+            _nextTokenId() + recipients.length <= MAX_SUPPLY,
+            "Not enough supply left for batch minting"
         );
 
-        string memory baseURI = _baseURI();
-        string memory _tokenURI = revealed
-            ? string(abi.encodePacked(baseURI, tokenId.toString(), ".json"))
-            : _nonRevealedUri;
-
-        return bytes(baseURI).length != 0 ? _tokenURI : "";
-    }
-
-    function supportsInterface(
-        bytes4 interfaceId
-    )
-        public
-        view
-        override(ERC721, ERC721Enumerable, ERC721URIStorage)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
-    }
-
-    // Function to release funds to a specific address
-    function releaseFundsToAddress(address payable recipient) public onlyOwner {
-        require(
-            payable(recipient).send(address(this).balance),
-            "Transfer failed."
-        );
-    }
-
-    // Function to release funds to the owner
-    function releaseFundsToOwner() public onlyOwner {
-        require(
-            payable(owner()).send(address(this).balance),
-            "Transfer failed."
-        );
+        for (uint256 i; i < recipients.length; i++) {
+            _safeMint(recipients[i], 1);
+        }
+        emit BatchAirdropSuccess(recipients.length);
     }
 }
