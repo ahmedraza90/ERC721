@@ -20,6 +20,7 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
     mapping(address => uint256) private _walletMintCount;
     mapping(address => uint256) private _walletMintCountPublic;
     bool public _isPrivatePhase = true;
+    bool public _pause = false;
 
     // Boolean to toggle between reveal
     bool public revealed = false;
@@ -102,6 +103,13 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
 
     //     return bytes(baseURI).length != 0 ? _tokenURI : "";
     // }
+    function pause() public onlyOwner {
+        _pause = true;
+    }
+
+    function unpause() public onlyOwner {
+        _pause = false;
+    }
 
     function revealNFT(string memory baseURI) public onlyOwner {
         revealed = true;
@@ -114,8 +122,6 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
     }
 
     function airdrop(address to, uint256 quantity) external onlyOwner {
-        // _safeMint's second argument now takes in a quantity, not a tokenId.
-        // require(quantity + _numberMinted(to) <= MAX_MINTS, "Exceeded the limit");
         require(
             totalSupply() + quantity <= MAX_SUPPLY,
             "Not enough tokens left"
@@ -130,6 +136,10 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
         bytes32[] calldata merkleProof
     ) public payable nonReentrant {
         require(
+            _pause == false,
+            "mint has been pause"
+        );
+        require(
             _isPrivatePhase
                 ? _walletMintCount[to] + quantity < 3
                 : _walletMintCountPublic[to] + quantity < 2,
@@ -143,7 +153,7 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
         );
         require(_nextTokenId() < MAX_SUPPLY, "Max supply reached");
         require(
-            !(_isPrivatePhase && _nextTokenId() > 5),
+            !(_isPrivatePhase && _nextTokenId() > 12),
             "Total supply limit reached during private phase"
         );
         if (_isPrivatePhase) {
