@@ -5,6 +5,7 @@ const INFURA_API_KEY = "17a0a4a8d3af4e4a8337f3f3419b65af";
 const SEPOLIA_PRIVATE_KEY = "a6a8db63fbf66c82d2c158d62f259fb8add1f99b09befb4ecd926ba01a7e71e4";
 // a6a8db63fbf66c82d2c158d62f259fb8add1f99b09befb4ecd926ba01a7e71e4
 // f755c84ffc1d13b81224284bc4d33fd3d523e8189612f1cc0abf2f5ae3094208
+0x65c64e9abd0f8eaf684f9de950e2b04668ed39060cd5da5902c517dbccdff7eb
 const etherSapolia = "5TFHXHQ6DSKVHJ7KRP4EXXSG5C21YSMRYS"
 
 module.exports = {
@@ -21,7 +22,7 @@ module.exports = {
 };
 
 
-// npx hardhat verify --network sepolia 0x93A10C9F439309779ed9eC227ec0EB942A339F1e "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E" "Fido" "FD"  "www.baseuri.com/hidden" "0xe7c4507f0f61df91d6732a47735e762501aa914a34345b7722cd4bc85f795e2e"
+// npx hardhat verify --network sepolia  0x7C241006116c23A85A20c5e592993b124725f181 "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E" "FidoDido" "FDP"  "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/" "0xadc4c6829e84f407ae3b5989fc3bb94d65e43db3965d74360c4892bb6e687f3a"
 
 
 // npx hardhat run --network sepolia  scripts/deploy.js
@@ -40,6 +41,10 @@ module.exports = {
 // https://sepolia.etherscan.io/tx/0xcde8909f8ff0341f6f2fc1e36cbf475b6dc3e4f9ac6001d8a441396ffe71de5d = 100 = Tuesday = 4:20pm
 
 
+// new merkle
+// 0x62A0DF92818213750994701435342a3Da2E933f5
+
+// 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
 
 // testing:
 // 0x32E6F4368bf19Ec0dc75A95e79BC5e9cD0599131()

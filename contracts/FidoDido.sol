@@ -143,7 +143,7 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
         );
         require(_nextTokenId() < MAX_SUPPLY, "Max supply reached");
         require(
-            !(_isPrivatePhase && _nextTokenId() > 6854),
+            !(_isPrivatePhase && _nextTokenId() > 5),
             "Total supply limit reached during private phase"
         );
         if (_isPrivatePhase) {

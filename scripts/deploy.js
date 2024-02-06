@@ -7,10 +7,9 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
 
   const contract = await ethers.getContractFactory("FidoDido");
-  const contractAdd = await contract.deploy(deployer.address, "Fido", "FD", "www.baseuri.com/hidden", "0xe7c4507f0f61df91d6732a47735e762501aa914a34345b7722cd4bc85f795e2e");
+  const contractAdd = await contract.deploy(deployer.address, "FidoDido", "FDP", "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/", "0x33232dfda16210085aaf909ee81605eec687357f9028d171adedc184fdc3ff58");
   
   console.log("Token address:", contractAdd.target);
-
 
 }
 
