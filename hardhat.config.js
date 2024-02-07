@@ -4,7 +4,7 @@ require("@nomicfoundation/hardhat-toolbox");
 const INFURA_API_KEY = "17a0a4a8d3af4e4a8337f3f3419b65af";
 const SEPOLIA_PRIVATE_KEY =
   "fbdbdfcce596f39b4f0f47547b97227f22196c3544c050acfbb03e5f59e3a135";
-// a6a8db63fbf66c82d2c158d62f259fb8add1f99b09befb4ecd926ba01a7e71e4
+// a6a8db63fbf66c82d2c158d62f259fb8add1f99b09befb4ecd926ba01a7e71e4 ahmed
 // f755c84ffc1d13b81224284bc4d33fd3d523e8189612f1cc0abf2f5ae3094208
 // fbdbdfcce596f39b4f0f47547b97227f22196c3544c050acfbb03e5f59e3a135 abuzar
 // 0x65c64e9abd0f8eaf684f9de950e2b04668ed39060cd5da5902c517dbccdff7eb
@@ -25,7 +25,7 @@ module.exports = {
 
 
 // npx hardhat verify --network sepolia  0x7C241006116c23A85A20c5e592993b124725f181 "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E" "FidoDido" "FDP"  "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/" "0xadc4c6829e84f407ae3b5989fc3bb94d65e43db3965d74360c4892bb6e687f3a"
-// npx hardhat verify --network sepolia  0x3F8B11B6602eb27Ff05A0CeA546EbFaf896D0FEA "0xCAe968DC8e1BE15630Ddd5c06Ab90A6425383D9d" "FidoDido" "FDP"  "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/" "0x88ffe5cd571e7cf355d419ae3a1560a7829af670e1b7c65723bc71a34668811d"
+// npx hardhat verify --network sepolia  0x96cE680c3fb3B691E1838C1536C0E1160E299197 "0xCAe968DC8e1BE15630Ddd5c06Ab90A6425383D9d" "FidoDido" "FDP"  "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/" "0x88ffe5cd571e7cf355d419ae3a1560a7829af670e1b7c65723bc71a34668811d"
 //
 
 
