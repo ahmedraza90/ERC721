@@ -2,13 +2,13 @@
 pragma solidity ^0.8.4;
 
 import "./ERC721A.sol";
-// import "@openzeppelin/contracts/access/Ownable.sol";
-// import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-// import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "../node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "../node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+// import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+// import "../node_modules/@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+// import "../node_modules/@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
     bytes32 public merkleRoot;
@@ -153,7 +153,7 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
         );
         require(_nextTokenId() < MAX_SUPPLY, "Max supply reached");
         require(
-            !(_isPrivatePhase && _nextTokenId() > 12),
+            !(_isPrivatePhase && _nextTokenId() > 4999),
             "Total supply limit reached during private phase"
         );
         if (_isPrivatePhase) {
