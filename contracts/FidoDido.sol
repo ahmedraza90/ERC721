@@ -10,7 +10,6 @@ import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 
 /// @title FidoDido - A smart contract for managing FidoDido NFTs
-/// @author Your Name
 /// @notice This contract allows for the creation, management, and sale of FidoDido NFTs
 contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
     /// @dev The root hash of the Merkle tree used for verifying whitelisted addresses
@@ -180,7 +179,7 @@ contract FidoDido is ERC721A, Ownable, ReentrancyGuard {
         _safeMint(to, quantity);
     }
 
-    /// @notice Safely mints new tokens, with optional Merkle proof for private phase
+    /// @notice Safely mints new tokens, with Merkle proof for private .
     /// @param quantity The number of tokens to mint
     /// @param to The address to receive the minted tokens
     /// @param merkleProof The Merkle proof to verify eligibility in the private phase
