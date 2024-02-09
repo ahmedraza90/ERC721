@@ -12,7 +12,7 @@ async function main() {
     "FidoDido",
     "FDP",
     "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/",
-    "0x88ffe5cd571e7cf355d419ae3a1560a7829af670e1b7c65723bc71a34668811d"
+    "0x3a5327516938353ec71661bfa235179f585c879f5c41e0976990da88f111e014"
   );
   
   console.log("Token address:", contractAdd.target);
