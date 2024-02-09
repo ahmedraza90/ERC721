@@ -47,7 +47,7 @@ describe("FidoDido Testing", function () {
   });
   describe("safeMint", () => {
     it("should mint a token if privateSale's conditions are met", async () => {
-      const price = ethers.parseEther("0.06");
+      const price = ethers.parseEther("0.03");
       await expect(yourContract.safeMint(2, "0xCAe968DC8e1BE15630Ddd5c06Ab90A6425383D9d", [
         "0xd60a72c5b1c435801078a5feff7ed3f2faef69976dd78889484525c176c1d8ab",
         "0x19862de84563d20fd08c4b581c0784b7198975a91e7c14744ddf8b8a87c02d9c",
@@ -60,7 +60,7 @@ describe("FidoDido Testing", function () {
       await yourContract.connect(owner).switchPhase();
       expect(await yourContract._isPrivatePhase()).to.equal(false);
       const price = ethers.parseEther("0.04");
-      await expect(yourContract.safeMint(1, "0x617F2E2fD72FD9D5503197092aC168c91465E7f2", [], { value: price })).to.emit(yourContract, "Transfer");
+      await expect(yourContract.safeMint(1, "0x617F2E2fD72FD9D5503197092aC168c91465E7f2",[], { value: price })).to.emit(yourContract, "Transfer");
     });
 
     it("should revert if mint limit on whitelist wallet is reached", async () => {

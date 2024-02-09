@@ -27,17 +27,17 @@ describe("FidoDido Testing", function () {
     ], { value: price5 })).to.emit(yourContract, "Transfer");
     const price4 = ethers.parseEther("0.06");
     await expect(yourContract.safeMint(2, "0x6fee6A6Cc73C8ad635ABD2f25e3Bf98552dCC9a8",
-    [
-      "0x2e11e6a7687e7ec82f0de53b3fb9f6b90df49ea013b5dc5d000331f48c1879e1",
-      "0x93f7be187118eb3e3c2e2967739201da9aff38df249cb7ee6ddb19a1bbf5fa59",
-      "0xfa79daff5ea29279825066d0b6e7b8e9cf9a53f71f9ace2fc7335386e8fda65e",
-      "0x1293c058403aaa31462e14abb5683fbe54c89bb93f812ae13f1c7a36339fe433",
-      "0x583b55cfeebb541075def04c0c7cbad6276f21c5bc6018ef5cf96fc19e1dfeca",
-      "0x8a24ad0ed106e9ecf15069728089b5f8480919a173fa6e48cc3ffabb74f85cee",
-      "0x19862de84563d20fd08c4b581c0784b7198975a91e7c14744ddf8b8a87c02d9c",
-      "0x0e99865699efc21372c6fbea3afaf7757841fc593354fbdf6248be9a25060d7c",
-      "0xe1c01371ca636c831f293d535a529bc4fbe232730de2a0e84f93b77a926be45c"
-    ], { value: price4 })).to.emit(yourContract, "Transfer");
+      [
+        "0x2e11e6a7687e7ec82f0de53b3fb9f6b90df49ea013b5dc5d000331f48c1879e1",
+        "0x93f7be187118eb3e3c2e2967739201da9aff38df249cb7ee6ddb19a1bbf5fa59",
+        "0xfa79daff5ea29279825066d0b6e7b8e9cf9a53f71f9ace2fc7335386e8fda65e",
+        "0x1293c058403aaa31462e14abb5683fbe54c89bb93f812ae13f1c7a36339fe433",
+        "0x583b55cfeebb541075def04c0c7cbad6276f21c5bc6018ef5cf96fc19e1dfeca",
+        "0x8a24ad0ed106e9ecf15069728089b5f8480919a173fa6e48cc3ffabb74f85cee",
+        "0x19862de84563d20fd08c4b581c0784b7198975a91e7c14744ddf8b8a87c02d9c",
+        "0x0e99865699efc21372c6fbea3afaf7757841fc593354fbdf6248be9a25060d7c",
+        "0xe1c01371ca636c831f293d535a529bc4fbe232730de2a0e84f93b77a926be45c"
+      ], { value: price4 })).to.emit(yourContract, "Transfer");
     const price3 = ethers.parseEther("0.06");
     await expect(yourContract.safeMint(2, "0xB2afcC303803968DF8672cBCEEcc3995aA962Ca2", [
       "0x01add8b21b3d9cecb21f39748a7708d85b957243e6fbc05222d6367b89d60f82",
@@ -109,17 +109,17 @@ describe("FidoDido Testing", function () {
     ], { value: price5 })).to.emit(yourContract, "Transfer");
     const price4 = ethers.parseEther("0.06");
     await expect(yourContract.safeMint(2, "0x6fee6A6Cc73C8ad635ABD2f25e3Bf98552dCC9a8",
-    [
-      "0x2e11e6a7687e7ec82f0de53b3fb9f6b90df49ea013b5dc5d000331f48c1879e1",
-      "0x93f7be187118eb3e3c2e2967739201da9aff38df249cb7ee6ddb19a1bbf5fa59",
-      "0xfa79daff5ea29279825066d0b6e7b8e9cf9a53f71f9ace2fc7335386e8fda65e",
-      "0x1293c058403aaa31462e14abb5683fbe54c89bb93f812ae13f1c7a36339fe433",
-      "0x583b55cfeebb541075def04c0c7cbad6276f21c5bc6018ef5cf96fc19e1dfeca",
-      "0x8a24ad0ed106e9ecf15069728089b5f8480919a173fa6e48cc3ffabb74f85cee",
-      "0x19862de84563d20fd08c4b581c0784b7198975a91e7c14744ddf8b8a87c02d9c",
-      "0x0e99865699efc21372c6fbea3afaf7757841fc593354fbdf6248be9a25060d7c",
-      "0xe1c01371ca636c831f293d535a529bc4fbe232730de2a0e84f93b77a926be45c"
-    ], { value: price4 })).to.emit(yourContract, "Transfer");
+      [
+        "0x2e11e6a7687e7ec82f0de53b3fb9f6b90df49ea013b5dc5d000331f48c1879e1",
+        "0x93f7be187118eb3e3c2e2967739201da9aff38df249cb7ee6ddb19a1bbf5fa59",
+        "0xfa79daff5ea29279825066d0b6e7b8e9cf9a53f71f9ace2fc7335386e8fda65e",
+        "0x1293c058403aaa31462e14abb5683fbe54c89bb93f812ae13f1c7a36339fe433",
+        "0x583b55cfeebb541075def04c0c7cbad6276f21c5bc6018ef5cf96fc19e1dfeca",
+        "0x8a24ad0ed106e9ecf15069728089b5f8480919a173fa6e48cc3ffabb74f85cee",
+        "0x19862de84563d20fd08c4b581c0784b7198975a91e7c14744ddf8b8a87c02d9c",
+        "0x0e99865699efc21372c6fbea3afaf7757841fc593354fbdf6248be9a25060d7c",
+        "0xe1c01371ca636c831f293d535a529bc4fbe232730de2a0e84f93b77a926be45c"
+      ], { value: price4 })).to.emit(yourContract, "Transfer");
     const price3 = ethers.parseEther("0.06");
     await expect(yourContract.safeMint(2, "0xB2afcC303803968DF8672cBCEEcc3995aA962Ca2", [
       "0x01add8b21b3d9cecb21f39748a7708d85b957243e6fbc05222d6367b89d60f82",
@@ -156,7 +156,7 @@ describe("FidoDido Testing", function () {
       "0x0e99865699efc21372c6fbea3afaf7757841fc593354fbdf6248be9a25060d7c",
       "0xe1c01371ca636c831f293d535a529bc4fbe232730de2a0e84f93b77a926be45c"
     ], { value: price1 })).to.emit(yourContract, "Transfer");
-   
+
     await yourContract.connect(owner).pause();
 
     const signers = [];
@@ -173,8 +173,8 @@ describe("FidoDido Testing", function () {
     const supply = await yourContract.totalSupply();
     expect(supply).to.equal(110);
 
-    console.log("--------------",supply)
-   
+    console.log("--------------", supply)
+
     const price0 = ethers.parseEther("0.06");
     await expect(yourContract.safeMint(1, "0x8023627afa6f626ce396c82b4ad5182f437be1c7", [
       "0x12333f4e8552bd30cd140b53098fe0cab6f047d393a56710c35e6a793eb2ccbf",
@@ -219,11 +219,10 @@ describe("FidoDido Testing", function () {
     await yourContract.connect(owner).switchPhase();
 
     const price_0 = ethers.parseEther("0.06");
-    await expect(yourContract.safeMint(2, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [] , { value: price_0 })).to.be.revertedWith("Mint limit reached");
-    await expect(yourContract.safeMint(1, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [] , { value: price_0 })).to.emit(yourContract, "Transfer");
-    await expect(yourContract.safeMint(1, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [] , { value: price_0 })).to.be.revertedWith("Mint limit reached");
+    await expect(yourContract.safeMint(2, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [], { value: price_0 })).to.be.revertedWith("Mint limit reached");
+    await expect(yourContract.safeMint(1, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [], { value: price_0 })).to.emit(yourContract, "Transfer");
+    await expect(yourContract.safeMint(1, "0x34Baffa584cF55d1CCF8d8A2762e938e6f765F3E", [], { value: price_0 })).to.be.revertedWith("Mint limit reached");
   });
-
 
 
 });
