@@ -11,8 +11,8 @@ async function main() {
     deployer.address,
     "FidoDido",
     "FDP",
-    "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/",
-    "0x3a5327516938353ec71661bfa235179f585c879f5c41e0976990da88f111e014"
+    "https://fidodido-hidden7777.s3.eu-west-1.amazonaws.com/metadata/", 
+    "0xfb226b744187c389d141ce4e695ca699ff9a1131d37546488acc8b570627f968"
   );
   
   console.log("Token address:", contractAdd.target);
